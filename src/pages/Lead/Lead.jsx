@@ -34,8 +34,9 @@ const Lead = () => {
       sx={{
         width: "100%",
         bgcolor: "#F0F2F6",
-        height: "100%",
+        maxHeight: "100%",
         position: "relative",
+        flex: 1,
         // border: "2px solid red",
       }}
     >
@@ -485,6 +486,8 @@ const Lead = () => {
                   display: "grid",
                   gridTemplateColumns: "repeat(2, 1fr)",
                   gap: "16.5px",
+                  justifyItems: "center",
+                  justifyContent: "space-between",
                   scrollbarWidth: "none",
                 }}
               >
