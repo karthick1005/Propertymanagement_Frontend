@@ -136,8 +136,9 @@ const Lead = () => {
         sx={{
           position: "absolute",
           margin: "24px",
-          height: "calc(100% - 95px)",
+          //   height: "calc(100% - 95px)",
           width: "calc(100% - 48px)",
+          //   border: "2px solid wheat",
           //   height: "calc(100% - 58px)",
           borderRadius: "12px",
           bgcolor: "#FFFFFF",
@@ -213,13 +214,14 @@ const Lead = () => {
         />
         <Box
           sx={{
-            height: "486px",
+            // height: "486px",
             display: "flex",
-            alignItems: "center",
-            // justifyContent: "space-evenl//need to check",
+            // alignItems: "flex-start",
+            justifyContent: "space-between",
+            //need to check",
           }}
         >
-          <Box sx={{ width: "387px", height: "100%" }}>
+          <Box sx={{ height: "100%" }}>
             <Box
               sx={{
                 marginTop: "16px",
@@ -453,7 +455,9 @@ const Lead = () => {
           </Box>
           <Box
             sx={{
-              width: "484px",
+              flex: 1,
+              marginLeft: "12px",
+              minWidth: "484px",
               height: "100%",
               bgcolor: "#F5F7FAE6",
             }}
@@ -463,7 +467,7 @@ const Lead = () => {
                 marginTop: "16px",
                 marginLeft: "12px",
                 marginRight: "12px",
-                width: "459.5px",
+                // width: "459.5px",
                 height: "469.36px",
                 // border: "2px solid red",
                 position: "relative",
@@ -491,14 +495,16 @@ const Lead = () => {
               </Box>
             </Box>
           </Box>
-          <Box sx={{ width: "340px", height: "100%" }}>
+          <Box sx={{ width: "484px", height: "100%" }}>
             <Box
               sx={{
                 marginTop: "16px",
                 marginLeft: "11px",
-                width: "351px",
+                // width: "351px",
                 height: "116px",
                 borderBottom: "2px solid #E4E8EE",
+                position: "relative",
+                marginRight: "24px",
               }}
               className="UsercardDetails"
             >
@@ -508,7 +514,8 @@ const Lead = () => {
                   marginTop: "16.5px",
                   borderRadius: "4px",
                   bgcolor: "#F5F7FA",
-                  width: "340px",
+                  width: "100%",
+                  //   width: "340px",
                   height: "434px",
                   position: "absolute",
                   textWrap: "nowrap",

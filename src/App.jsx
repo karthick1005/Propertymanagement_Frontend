@@ -14,8 +14,10 @@ export default function App() {
         sx={{
           marginLeft: "71.5px",
           marginTop: "54px",
-          height: "calc(100vh - 54px)",
-          width: "calc(100vw - 71.5px)",
+          // height: "100%",
+          height: "calc(100vh - 60px)",
+          width: "calc(100vw - 100.5px)",
+          border: "2px solid red",
         }}
       >
         <RouterProvider router={router} />
