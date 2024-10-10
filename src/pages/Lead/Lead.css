@@ -1,0 +1,42 @@
+.Content_title {
+    letter-spacing: 0;
+    color: #071741;
+    font-size: 16px;
+    text-transform: capitalize;
+    opacity: 1;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.Currentmenubar p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.UsercardDetails h1 {
+    color: #4E5A6B;
+    font-size: 14px;
+    height: 19px;
+}
+
+.userdetails_name h1 {
+    font-size: 14px;
+    letter-spacing: 0;
+    width: 71px;
+    text-wrap: nowrap;
+    text-transform: capitalize;
+    text-align: left;
+}
+
+.userdetails_name_phone p {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.Quotationdetails #quote_head {
+    color: #4E5A6B;
+    font-size: 14px;
+    height: 19px;
+
+}
