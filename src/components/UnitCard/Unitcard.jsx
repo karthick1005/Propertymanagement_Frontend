@@ -1,9 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Unitcard.css";
 import { Box, Button } from "@mui/material";
 import { Bathtub, Bedicon, Home, Trashicon } from "../../assets/Icons";
 import AddIcon from "@mui/icons-material/Add";
-export const Unitcard = () => {
+import { Unstable_Popup as BasePopup } from "@mui/base/Unstable_Popup";
+import { styled } from "@mui/system";
+import useStore from "../../zustand/store";
+import Popup from "../Popup/Popup";
+import PricingTable from "../PricingTable/PricingTable";
+import Amenities from "../Amenities/Amenities";
+import Utility from "../Utility/Utility";
+
+const PopupBody = styled("div")({
+  width: "max-content",
+  padding: "8px 12px",
+  margin: "8px",
+  borderRadius: "4px",
+  border: "1px solid #E4E8EE",
+  backgroundColor: "#fff",
+  fontWeight: 600,
+  boxShadow: "0px 10px 25px #0000000A",
+  //   fontFamily: "'IBM Plex Sans', sans-serif",
+  fontSize: "12px",
+  zIndex: 1,
+  color: "#4E5A6B",
+});
+
+export default PopupBody;
+
+export const Unitcard = ({ Unitid }) => {
+  const { anchor, currentselected, setAnchor, setcurrentselected, setpopup } =
+    useStore();
+  const handleClick = (event) => {
+    setcurrentselected(Unitid);
+    setAnchor(anchor === event.currentTarget ? null : event.currentTarget);
+  };
+
+  const open = Boolean(anchor);
+  const id = open ? "simple-popper" : undefined;
+
   return (
     <Box
       sx={{
@@ -177,10 +212,81 @@ export const Unitcard = () => {
             boxSizing: "border-box",
             borderRadius: "4px",
           }}
+          onClick={handleClick}
         >
           <AddIcon sx={{ fontSize: "16px" }} />
           Customise
-        </Button>{" "}
+        </Button>
+        <BasePopup
+          id={id}
+          open={open}
+          anchor={anchor}
+          offset={4}
+          placement="right"
+        >
+          <PopupBody>
+            <Box
+              sx={{
+                paddingBottom: "10px",
+                borderBottom: "1px solid #E4E8EE",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setpopup(<PricingTable />);
+                setAnchor(null);
+              }}
+            >
+              Add Pricing Component
+            </Box>
+            <Box
+              sx={{
+                paddingTop: "10px",
+
+                paddingBottom: "10px",
+                borderBottom: "1px solid #E4E8EE",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setpopup(<Amenities />);
+                setAnchor(null);
+              }}
+            >
+              Add Amenities
+            </Box>
+            <Box
+              sx={{
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                borderBottom: "1px solid #E4E8EE",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setpopup(<Utility />);
+                setAnchor(null);
+              }}
+            >
+              Add Utilities
+            </Box>
+            <Box
+              sx={{
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                borderBottom: "1px solid #E4E8EE",
+                cursor: "pointer",
+              }}
+            >
+              Add Discount
+            </Box>
+            <Box
+              sx={{
+                paddingTop: "10px",
+                cursor: "pointer",
+              }}
+            >
+              Remove Component
+            </Box>
+          </PopupBody>
+        </BasePopup>
       </Box>
     </Box>
   );

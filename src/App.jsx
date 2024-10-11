@@ -5,10 +5,12 @@ import TopNavbar from "./components/TopNavbar/TopNavbar";
 import VerticalNav from "./components/VerticalNav/VerticalNav";
 import { Box } from "@mui/material";
 import { HideImage } from "@mui/icons-material";
+import Popup from "./components/Popup/Popup";
 
 export default function App() {
   return (
     <>
+      <Popup />
       <TopNavbar />
       <VerticalNav />
       <Box
@@ -20,7 +22,6 @@ export default function App() {
           // width:"calc(100vw - 54px)"
           width: "calc(100vw - 75.5px)",
           overflowX: "hidden",
-          border: "2px solid red",
           display: "flex",
           flexDirection: "column",
         }}

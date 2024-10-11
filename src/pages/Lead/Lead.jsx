@@ -16,7 +16,6 @@ const MenuProps = {
 };
 const Lead = () => {
   const names = ["Casagrand"];
-
   const [Currentname, setcurrentname] = useState(names[0]);
   const handleChange = (event) => {
     setcurrentname(event.target.value);
@@ -491,10 +490,10 @@ const Lead = () => {
                   scrollbarWidth: "none",
                 }}
               >
-                <Unitcard />
-                <Unitcard />
-                <Unitcard />
-                <Unitcard />
+                <Unitcard Unitid={1} />
+                <Unitcard Unitid={2} />
+                <Unitcard Unitid={3} />
+                <Unitcard Unitid={4} />
               </Box>
             </Box>
           </Box>
@@ -771,6 +770,7 @@ const Lead = () => {
                 width: "88px",
                 height: "40px",
                 borderRadius: "8px",
+                borderColor: "#E4E8EE",
               }}
             >
               Previous
@@ -788,6 +788,7 @@ const Lead = () => {
                 width: "72px",
                 height: "40px",
                 borderRadius: "8px",
+                borderColor: "#E4E8EE",
               }}
             >
               Cancel
