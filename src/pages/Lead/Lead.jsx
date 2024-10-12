@@ -3,6 +3,7 @@ import "./Lead.css";
 import { Box, Button, Divider, MenuItem, Select } from "@mui/material";
 import { Expandedarrow } from "../../assets/Icons";
 import { Unitcard } from "../../components/UnitCard/Unitcard";
+import useStore from "../../zustand/store";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -27,7 +28,7 @@ const Lead = () => {
     "Quotation Details",
     "Preview and Create",
   ];
-
+  const { estate } = useStore();
   return (
     <Box
       sx={{
@@ -490,10 +491,9 @@ const Lead = () => {
                   scrollbarWidth: "none",
                 }}
               >
-                <Unitcard Unitid={1} />
-                <Unitcard Unitid={2} />
-                <Unitcard Unitid={3} />
-                <Unitcard Unitid={4} />
+                {estate.map((val) => {
+                  return <Unitcard Unitid={val.id} />;
+                })}
               </Box>
             </Box>
           </Box>

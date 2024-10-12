@@ -7,10 +7,8 @@ const useStore = create((set, get) => ({
     currentselected: null,
     Popup: null,
     infoanchor: null,
-    primary: null,
-    secondary: null,
-    Amenities: null,
-    Utility: null,
+    estate: [{ id: 1 }, { id: 2 }],
+
     setAnchor: (anchor) => {
         set({ anchor })
     },
@@ -62,13 +60,23 @@ const useStore = create((set, get) => ({
     updateAmenities: (updatedAmenities) => {
         set((state) => ({
             ...state,
-            Amenities: updatedAmenities,
+            // Amenities: updatedAmenities,
+            estate: state.estate.map((estate) =>
+                estate.id === state.currentselected
+                    ? { ...estate, Amenities: updatedAmenities }
+                    : estate
+            ),
         }));
     },
     updateUtility: (updatedUtility) => {
         set((state) => ({
             ...state,
-            Utility: updatedUtility,
+            // Utility: updatedUtility,
+            estate: state.estate.map((estate) =>
+                estate.id === state.currentselected
+                    ? { ...estate, Utility: updatedUtility }
+                    : estate
+            ),
         }));
     },
 }));

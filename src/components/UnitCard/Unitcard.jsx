@@ -10,6 +10,8 @@ import Popup from "../Popup/Popup";
 import PricingTable from "../PricingTable/PricingTable";
 import Amenities from "../Amenities/Amenities";
 import Utility from "../Utility/Utility";
+import Discount from "../Discount/Discount";
+import Removecomponent from "../Removecomponent/Removecomponent";
 
 const PopupBody = styled("div")({
   width: "max-content",
@@ -274,6 +276,10 @@ export const Unitcard = ({ Unitid }) => {
                 borderBottom: "1px solid #E4E8EE",
                 cursor: "pointer",
               }}
+              onClick={() => {
+                setpopup(<Discount />);
+                setAnchor(null);
+              }}
             >
               Add Discount
             </Box>
@@ -281,6 +287,10 @@ export const Unitcard = ({ Unitid }) => {
               sx={{
                 paddingTop: "10px",
                 cursor: "pointer",
+              }}
+              onClick={() => {
+                setpopup(<Removecomponent />);
+                setAnchor(null);
               }}
             >
               Remove Component

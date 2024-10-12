@@ -6,8 +6,10 @@ import useStore from "../../zustand/store";
 import CustomToggle from "../CustomToggle/Amenities_toggle";
 
 const Utility = () => {
-  const { setpopup, updateUtility, Utility } = useStore();
-  const [localutility, setlocalutility] = useState(Utility || []);
+  const { setpopup, updateUtility, estate, currentselected } = useStore();
+  const [localutility, setlocalutility] = useState(
+    estate.find((val) => val.id == currentselected).Utility || []
+  );
 
   const utility_list = [
     {
@@ -18,7 +20,7 @@ const Utility = () => {
     },
   ];
   return (
-    <Box sx={{ width: "432px" }}>
+    <Box sx={{ width: "432px", height: "688px" }}>
       <Box
         sx={{
           display: "flex",
@@ -75,8 +77,8 @@ const Utility = () => {
           </h1>
           <Box
             sx={{
-              height: "486px",
-              maxHeight: "486px",
+              height: "437px",
+              maxHeight: "437px",
               width: "383px",
               marginTop: "12px",
               overflowX: "hidden",

@@ -7,8 +7,10 @@ import Amenities_toggle from "../CustomToggle/Amenities_toggle";
 import CustomToggle from "../CustomToggle/Amenities_toggle";
 
 const Amenities = () => {
-  const { setpopup, Amenities, updateAmenities } = useStore();
-  const [localAmenities, setLocalAmenities] = useState(Amenities || []);
+  const { setpopup, estate, updateAmenities, currentselected } = useStore();
+  const [localAmenities, setLocalAmenities] = useState(
+    estate.find((val) => (val.id = currentselected)).Amenities || []
+  );
 
   const amenities_list = [
     {
@@ -19,7 +21,7 @@ const Amenities = () => {
     },
   ];
   return (
-    <Box sx={{ width: "432px" }}>
+    <Box sx={{ width: "432px", height: "688px" }}>
       <Box
         sx={{
           display: "flex",
@@ -76,8 +78,8 @@ const Amenities = () => {
           </h1>
           <Box
             sx={{
-              height: "486px",
-              maxHeight: "486px",
+              height: "437px",
+              maxHeight: "437px",
               width: "383px",
               marginTop: "12px",
               overflowX: "hidden",
