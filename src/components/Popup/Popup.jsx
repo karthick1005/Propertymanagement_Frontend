@@ -1,6 +1,6 @@
 import { Modal } from "@mui/base";
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import useStore from "../../zustand/store";
 import Backdrop from "@mui/material/Backdrop";
 import PricingTable from "../PricingTable/PricingTable";
@@ -34,6 +34,11 @@ const Popup = () => {
   const handleClose = () => setOpen(false);
   const open = Boolean(infoanchor);
   const id = open ? "simple-popper" : undefined;
+  useEffect(() => {
+    if (Popup == null) {
+      setInfoAnchor(null);
+    }
+  }, [Popup]);
   return (
     <Modal
       open={Popup !== null}

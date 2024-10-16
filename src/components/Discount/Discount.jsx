@@ -63,7 +63,8 @@ const Discount = () => {
         0
       );
     }
-    return total;
+    console.log(currentselected);
+    return total + currentselected.price;
   };
   return (
     <Box

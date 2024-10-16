@@ -9,8 +9,8 @@ import {
   Squarefeet,
 } from "../../assets/Icons";
 import useStore from "../../zustand/store";
-import Removecomponent_model from "./Removecomponent_model";
-const Removecomponent = () => {
+import ViewUnits_model from "./ViewUnits_model";
+const ViewUnits = () => {
   const apartment = [
     {
       id: 1,
@@ -90,7 +90,7 @@ const Removecomponent = () => {
         }}
       >
         <h1 style={{ fontSize: "16px", fontWeight: 800, color: "#091B29" }}>
-          Remove Component
+          Unit Details
         </h1>
         <CloseIcon
           sx={{ color: "#7C8594", userSelect: "none", cursor: "pointer" }}
@@ -391,13 +391,13 @@ const Removecomponent = () => {
           <h1
             style={{ fontSize: "14px", fontWeight: "bold", color: "#091B29" }}
           >
-            UNIT PRICE DETAIL
+            UNIT PRICING DETAILS
           </h1>
           <Box
             sx={{
               marginTop: "15px",
-              maxHeight: "435px",
-              height: "435px",
+              maxHeight: "500px",
+              height: "500px",
               display: "flex",
               flexDirection: "column",
               gap: "15px",
@@ -407,14 +407,14 @@ const Removecomponent = () => {
             }}
           >
             {localAmenities.Amenities?.map((val) => (
-              <Removecomponent_model
+              <ViewUnits_model
                 data={val}
                 type="Amenities"
                 removedata={removedata}
               />
             ))}
             {localAmenities.Utility?.map((val) => (
-              <Removecomponent_model
+              <ViewUnits_model
                 data={val}
                 type="Utility"
                 removedata={removedata}
@@ -444,32 +444,10 @@ const Removecomponent = () => {
               $ {calculatetotal()}
             </h1>
           </Box>
-          <Button
-            variant="outlined"
-            sx={{
-              textTransform: "none",
-              fontWeight: "bold",
-              fontSize: "14px",
-              padding: "11px 16px",
-              width: "100%",
-              height: "40px",
-              borderRadius: "4px",
-              bgcolor: "#5078E1",
-              color: "white",
-              textWrap: "nowrap",
-              marginTop: "23px",
-            }}
-            onClick={() => {
-              savecompoenent();
-              setpopup(null);
-            }}
-          >
-            Update & Save
-          </Button>
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default Removecomponent;
+export default ViewUnits;

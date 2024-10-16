@@ -160,7 +160,10 @@ const PricingTable = () => {
                     boxSizing: "border-box",
                     cursor: "pointer",
                   }}
-                  onClick={() => EnableCurrentcomponent(val)}
+                  onClick={() => {
+                    EnableCurrentcomponent(val);
+                    setInfoAnchor(null);
+                  }}
                 >
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Box
@@ -1141,7 +1144,10 @@ const PricingTable = () => {
                     borderRadius: "4px",
                     borderColor: "#E4E8EE",
                   }}
-                  onClick={() => setcurrentcomponent(null)}
+                  onClick={() => {
+                    setcurrentcomponent(null);
+                    setInfoAnchor(null);
+                  }}
                 >
                   Back
                 </Button>

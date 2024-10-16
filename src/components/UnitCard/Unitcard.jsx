@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Unitcard.css";
 import { Box, Button } from "@mui/material";
 import { Bathtub, Bedicon, Home, Trashicon } from "../../assets/Icons";
@@ -12,6 +12,7 @@ import Amenities from "../Amenities/Amenities";
 import Utility from "../Utility/Utility";
 import Discount from "../Discount/Discount";
 import Removecomponent from "../Removecomponent/Removecomponent";
+import ViewUnits from "../ViewUnits/ViewUnits";
 
 const PopupBody = styled("div")({
   width: "max-content",
@@ -31,16 +32,66 @@ const PopupBody = styled("div")({
 export default PopupBody;
 
 export const Unitcard = ({ data }) => {
-  const { anchor, currentselected, setAnchor, setcurrentselected, setpopup } =
-    useStore();
+  const {
+    anchor,
+    currentselected,
+    setAnchor,
+    setcurrentselected,
+    setpopup,
+    estate,
+  } = useStore();
   const handleClick = (event) => {
+    event.stopPropagation();
     setcurrentselected(data);
     setAnchor(anchor === event.currentTarget ? null : event.currentTarget);
   };
 
   const open = Boolean(anchor);
   const id = open ? "simple-popper" : undefined;
+  const [localAmenities, setLocalAmenities] = useState(() => {
+    const estateEntry = estate.find((val) => val.id === data.id);
 
+    return {
+      Amenities: estateEntry?.Amenities ? [...estateEntry.Amenities] : [],
+      Utility: estateEntry?.Utility ? [...estateEntry.Utility] : [],
+    };
+  });
+
+  const [currrentprice, setcurrentprice] = useState(data.price);
+  const [originalprice, setoriginalprice] = useState(data.price);
+  useEffect(() => {
+    const estateEntry = estate.find((val) => val.id === data.id);
+    let datas = {
+      Amenities: estateEntry?.Amenities ? [...estateEntry.Amenities] : [],
+      Utility: estateEntry?.Utility ? [...estateEntry.Utility] : [],
+    };
+    setLocalAmenities(datas);
+    setcurrentprice(calculatetotal("Current", datas));
+    setoriginalprice(calculatetotal("original", datas));
+  }, [estate]);
+  const calculatetotal = (type, datas) => {
+    let total = 0;
+    for (const key in datas) {
+      if (datas[key].length > 0) {
+        if (type == "Current") {
+          total += datas[key].reduce((acc, item) => {
+            if (item.Discount <= 0 || item.Discount === null) {
+              return acc + Number(item.price);
+            }
+
+            return acc + (item.price - (item.Discount / 100) * item.price);
+          }, 0);
+        } else if (type == "original") {
+          total += datas[key].reduce(
+            (acc, item) => acc + Number(item.price),
+            0
+          );
+        }
+      }
+    }
+    total += data.price;
+    return total;
+  };
   return (
     <Box
       sx={{
@@ -52,9 +103,10 @@ export const Unitcard = ({ data }) => {
         boxSizing: "border-box",
         padding: "11.5px",
         paddingBottom: "5px",
+        cursor: "pointer",
       }}
+      onClick={() => setpopup(<ViewUnits />)}
     >
-      {console.log(data)}
       <Box
         sx={{
           width: "198px",
@@ -82,10 +134,36 @@ export const Unitcard = ({ data }) => {
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
+            userSelect: "none",
+          }}
+          onClick={(event) => {
+            event.stopPropagation();
           }}
         >
           <Trashicon />
         </Box>
+        {currrentprice !== originalprice ? (
+          <Box
+            sx={{
+              width: "85px",
+              height: "17px",
+              position: "absolute",
+              right: "-10px",
+              bottom: "-10px",
+              bgcolor: "#FFF4EB",
+              borderRadius: "4px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              fontSize: "8px",
+              fontWeight: "bold",
+              color: "#FF9340",
+            }}
+          >
+            % Discount Applied
+          </Box>
+        ) : null}
       </Box>
       <Box
         sx={{
@@ -97,7 +175,14 @@ export const Unitcard = ({ data }) => {
         className="Estate_name"
       >
         <h1>{data.name}</h1>
-        <h1>$ 1,200</h1>
+        <h1
+          style={{
+            color: currrentprice === originalprice ? "black" : "#FF9340",
+          }}
+        >
+          $ {currrentprice}
+          {currrentprice !== originalprice ? ".00" : null}
+        </h1>
       </Box>
       <Box
         className="userdetails_name_phone"
@@ -236,7 +321,8 @@ export const Unitcard = ({ data }) => {
                 borderBottom: "1px solid #E4E8EE",
                 cursor: "pointer",
               }}
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 setpopup(<PricingTable />);
                 setAnchor(null);
               }}
@@ -251,7 +337,8 @@ export const Unitcard = ({ data }) => {
                 borderBottom: "1px solid #E4E8EE",
                 cursor: "pointer",
               }}
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 setpopup(<Amenities />);
                 setAnchor(null);
               }}
@@ -265,7 +352,8 @@ export const Unitcard = ({ data }) => {
                 borderBottom: "1px solid #E4E8EE",
                 cursor: "pointer",
               }}
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 setpopup(<Utility />);
                 setAnchor(null);
               }}
@@ -279,7 +367,8 @@ export const Unitcard = ({ data }) => {
                 borderBottom: "1px solid #E4E8EE",
                 cursor: "pointer",
               }}
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 setpopup(<Discount />);
                 setAnchor(null);
               }}
@@ -291,7 +380,8 @@ export const Unitcard = ({ data }) => {
                 paddingTop: "10px",
                 cursor: "pointer",
               }}
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 setpopup(<Removecomponent />);
                 setAnchor(null);
               }}

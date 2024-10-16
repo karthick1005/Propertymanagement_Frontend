@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 import { Deleteicon } from "../../assets/Icons";
 
-const Removecomponent_model = ({ data, type, removedata }) => {
+const ViewUnits_model = ({ data, type, removedata }) => {
   return (
     <Box
       sx={{
@@ -37,19 +37,18 @@ const Removecomponent_model = ({ data, type, removedata }) => {
               color: "#4E5A6B",
             }}
           >
-            {console.log()}$
-            {Number(data.price) - (data.Discount / 100) * Number(data.price)}
+            ${Number(data.price) - (data.Discount / 100) * Number(data.price)}
           </h1>
-          <Box
+          {/* <Box
             sx={{ width: "26px", height: "26px", cursor: "pointer" }}
             onClick={() => removedata(data, type)}
           >
             <Deleteicon />
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default Removecomponent_model;
+export default ViewUnits_model;
