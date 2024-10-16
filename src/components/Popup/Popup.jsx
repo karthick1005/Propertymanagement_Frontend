@@ -12,9 +12,11 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
 
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
+  border: "1px solid #E4E8EE",
+  backgroundColor: "#fff",
+  boxShadow: "0px 10px 25px #0000000A",
+  borderRadius: "8px",
+  boxSizing: "border-box",
   zIndex: "5",
 };
 const PopupBody = styled("div")({

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Lead.css";
 import { Box, Button, Divider, MenuItem, Select } from "@mui/material";
 import { Expandedarrow } from "../../assets/Icons";
 import { Unitcard } from "../../components/UnitCard/Unitcard";
 import useStore from "../../zustand/store";
+import { getRequest } from "../../utils/axios";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -28,7 +29,20 @@ const Lead = () => {
     "Quotation Details",
     "Preview and Create",
   ];
-  const { estate } = useStore();
+  const { estate, setestate, setuserdetails, userdetails } = useStore();
+  const options = { day: "numeric", month: "short", year: "2-digit" };
+  useEffect(() => {
+    const fetchdata = async () => {
+      let data = await getRequest("/getuserdata", { user_id: 1 });
+      // console.log(data.data);
+      let res = data.data;
+      let estatedata = res.user_estates.map((val) => val.estate);
+      delete res["user_estates"];
+      setestate(estatedata);
+      setuserdetails(res);
+    };
+    fetchdata();
+  }, []);
   return (
     <Box
       sx={{
@@ -269,7 +283,7 @@ const Lead = () => {
                       gap: "8px",
                     }}
                   >
-                    <h1>Tom Cruise</h1>
+                    <h1>{userdetails?.username || "Tom Cruise"}</h1>
                     <Box
                       sx={{
                         color: "#091B29",
@@ -295,7 +309,10 @@ const Lead = () => {
                       gap: "8px",
                     }}
                   >
-                    <p>+91 9090808012</p>
+                    <p>
+                      {userdetails?.contry_code + " " + userdetails?.phoneno ||
+                        "+91 9090808012"}
+                    </p>
 
                     <Box
                       sx={{
@@ -311,7 +328,7 @@ const Lead = () => {
                         borderRadius: "100%",
                       }}
                     />
-                    <p>Tomcruise2515@mail.com</p>
+                    <p>{userdetails?.email || "Tomcruise2515@mail.com"}</p>
                   </Box>
                 </Box>
               </Box>
@@ -357,7 +374,10 @@ const Lead = () => {
                       color: "#091B29",
                     }}
                   >
-                    30 Jan 22
+                    {new Date(userdetails?.lease_start_date).toLocaleDateString(
+                      "en-GB",
+                      options
+                    ) || "30 Jan 22"}
                   </p>
                 </Box>
                 <Box
@@ -384,7 +404,10 @@ const Lead = () => {
                       color: "#091B29",
                     }}
                   >
-                    30 Jan 23
+                    {new Date(userdetails?.lease_end_date).toLocaleDateString(
+                      "en-GB",
+                      options
+                    ) || "30 Jan 23"}
                   </p>
                 </Box>
                 <Box
@@ -411,7 +434,10 @@ const Lead = () => {
                       color: "#091B29",
                     }}
                   >
-                    30 Jan 23
+                    {new Date(userdetails?.rent_start_date).toLocaleDateString(
+                      "en-GB",
+                      options
+                    ) || "30 Jan 23"}
                   </p>
                 </Box>
               </Box>
@@ -447,7 +473,7 @@ const Lead = () => {
                       display: "flex",
                     }}
                   >
-                    90 Days{" "}
+                    {userdetails?.grace_period || "90"} Days{" "}
                     <span style={{ color: "#98A0AC" }}>(Beginning)</span>
                   </p>
                 </Box>
@@ -491,8 +517,8 @@ const Lead = () => {
                   scrollbarWidth: "none",
                 }}
               >
-                {estate.map((val) => {
-                  return <Unitcard Unitid={val.id} />;
+                {estate?.map((val) => {
+                  return <Unitcard data={val} />;
                 })}
               </Box>
             </Box>

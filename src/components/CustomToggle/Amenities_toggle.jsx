@@ -196,6 +196,7 @@ import styled from "@emotion/styled";
 import { Box, Checkbox, FormControlLabel, Switch } from "@mui/material";
 import { BpCheckedIcon, BpIcon } from "../Materialui/components";
 import useStore from "../../zustand/store";
+import { Discount } from "@mui/icons-material";
 
 const Android12Switch = styled(Switch)(() => ({
   padding: 8,
@@ -224,26 +225,25 @@ const Android12Switch = styled(Switch)(() => ({
 }));
 
 const CustomToggle = ({ item, localitems, setlocalitems, type }) => {
-  //   const { Amenities, setAmenities } = useStore();
-
-  // Step 1: Track local state for modifications
-
-  // Handle switch change locally
   const handleSwitchChange = () => {
+    console.log(item);
     let localtype = localitems.some((val) => val.id === item.id)
       ? "remove"
       : "add";
     if (localtype === "add") {
       setlocalitems([
         ...localitems,
-        { ...item, ...(type === "Amenities" && { free: false }) },
+        {
+          ...item,
+          ...(type === "Amenities" && { free: false }),
+          Discount: 0,
+        },
       ]);
     } else {
       setlocalitems(localitems.filter((val) => val.id !== item.id));
     }
   };
-
-  // Handle free checkbox change locally
+  const options = { day: "numeric", month: "short", year: "2-digit" };
   const handleCheckboxChange = () => {
     setlocalitems(
       localitems.map((val) =>
@@ -254,7 +254,6 @@ const CustomToggle = ({ item, localitems, setlocalitems, type }) => {
     );
   };
 
-  // Step 2: Save changes to Zustand store when Save button is clicked
   const handleSave = () => {
     setAmenities({
       type: "update",
@@ -283,7 +282,7 @@ const CustomToggle = ({ item, localitems, setlocalitems, type }) => {
       >
         <Box sx={{ display: "flex" }}>
           <img
-            src="/amenities.jpg"
+            src={item.img}
             style={{
               width: "44px",
               height: "44px",
@@ -334,7 +333,11 @@ const CustomToggle = ({ item, localitems, setlocalitems, type }) => {
                   borderRadius: "100%",
                 }}
               />
-              <p>Valid {item.valid}</p>
+              <p>
+                Valid{" "}
+                {new Date(item.valid_from).toLocaleDateString("en-GB", options)}{" "}
+                - {new Date(item.valid_to).toLocaleDateString("en-GB", options)}
+              </p>
             </Box>
           </Box>
         </Box>

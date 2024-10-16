@@ -8,7 +8,7 @@ import CustomToggle from "../CustomToggle/Amenities_toggle";
 const Utility = () => {
   const { setpopup, updateUtility, estate, currentselected } = useStore();
   const [localutility, setlocalutility] = useState(
-    estate.find((val) => val.id == currentselected).Utility || []
+    estate.find((val) => val.id === currentselected.id).Utility || []
   );
 
   const utility_list = [
@@ -19,6 +19,7 @@ const Utility = () => {
       valid: "Feb 22 - 12 Feb 23",
     },
   ];
+
   return (
     <Box sx={{ width: "432px", height: "688px" }}>
       <Box
@@ -86,7 +87,7 @@ const Utility = () => {
               scrollbarWidth: "none",
             }}
           >
-            {utility_list.map((val, i) => (
+            {currentselected.utilities_masters.map((val, i) => (
               <CustomToggle
                 item={val}
                 type={"Utility"}

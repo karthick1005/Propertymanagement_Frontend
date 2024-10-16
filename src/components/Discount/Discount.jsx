@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import useStore from "../../zustand/store";
 import {
@@ -33,7 +33,38 @@ const Discount = () => {
       img: "apartment.jpg",
     },
   ];
-  const { setpopup } = useStore();
+  const { setpopup, currentselected, estate, updateAmenities, updateUtility } =
+    useStore();
+  const [localAmenities, setLocalAmenities] = useState(() => {
+    const estateEntry = estate.find((val) => val.id === currentselected.id);
+
+    return {
+      Amenities: estateEntry?.Amenities ? [...estateEntry.Amenities] : [],
+      Utility: estateEntry?.Utility ? [...estateEntry.Utility] : [],
+    };
+  });
+  const Adddiscount = (data, type, dis) => {
+    setLocalAmenities((prev) => ({
+      ...prev,
+      [type]: prev[type].map((val) =>
+        val.id === data.id ? { ...val, Discount: dis } : val
+      ),
+    }));
+  };
+  const savecompoenent = () => {
+    updateAmenities(localAmenities.Amenities);
+    updateUtility(localAmenities.Utility);
+  };
+  const calculatetotal = () => {
+    let total = 0;
+    for (const key in localAmenities) {
+      total += localAmenities[key].reduce(
+        (acc, item) => acc + (item.price - (item.Discount / 100) * item.price),
+        0
+      );
+    }
+    return total;
+  };
   return (
     <Box
       sx={{
@@ -74,12 +105,12 @@ const Discount = () => {
               gap: "8px",
             }}
           >
-            {apartment.map((val, i) => {
+            {currentselected.estate_images.map((val, i) => {
               if (i == 0) {
                 return (
                   <Box
                     sx={{
-                      backgroundImage: `url(/${val.img})`,
+                      backgroundImage: `url(${val.img})`,
                       backgroundPosition: "center",
                       backgroundRepeat: "no-repeat",
                       backgroundSize: "cover",
@@ -101,22 +132,63 @@ const Discount = () => {
                       width: "168px",
                     }}
                   >
-                    {apartment.slice(1, 4).map((value, index) => {
-                      return (
-                        <Box
-                          sx={{
-                            backgroundImage: `url(/${value.img})`,
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "cover",
-                            width: "80px",
-                            height: "80px",
-                            borderRadius: "8px",
-                            cursor: "pointer",
-                            flexShrink: 0,
-                          }}
-                        >
-                          {index > 3 ? (
+                    {currentselected.estate_images
+                      .slice(1, 4)
+                      .map((value, index) => {
+                        return (
+                          <Box
+                            sx={{
+                              backgroundImage: `url(${value.img})`,
+                              backgroundPosition: "center",
+                              backgroundRepeat: "no-repeat",
+                              backgroundSize: "cover",
+                              width: "80px",
+                              height: "80px",
+                              borderRadius: "8px",
+                              cursor: "pointer",
+                              flexShrink: 0,
+                            }}
+                          >
+                            {index > 3 ? (
+                              <Box
+                                sx={{
+                                  bgcolor: "#1D1D1D73",
+                                  width: "100%",
+                                  height: "100%",
+                                  borderRadius: "8px",
+                                  color: "white",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  fontSize: "18px",
+                                  fontWeight: "bold",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                +{currentselected.estate_images.length - 5}
+                              </Box>
+                            ) : null}
+                          </Box>
+                        );
+                      })}
+                    {currentselected.estate_images
+                      .slice(4, 5)
+                      .map((value, index) => {
+                        console.log(value.id);
+                        return (
+                          <Box
+                            sx={{
+                              backgroundImage: `url(${value.img})`,
+                              backgroundPosition: "center",
+                              backgroundRepeat: "no-repeat",
+                              backgroundSize: "cover",
+                              width: "80px",
+                              height: "80px",
+                              borderRadius: "8px",
+                              cursor: "pointer",
+                              flexShrink: 0,
+                            }}
+                          >
                             <Box
                               sx={{
                                 bgcolor: "#1D1D1D73",
@@ -132,48 +204,11 @@ const Discount = () => {
                                 cursor: "pointer",
                               }}
                             >
-                              +{apartment.length - 5}
+                              +{currentselected.estate_images.length - 4}
                             </Box>
-                          ) : null}
-                        </Box>
-                      );
-                    })}
-                    {apartment.slice(4, 5).map((value, index) => {
-                      console.log(value.id);
-                      return (
-                        <Box
-                          sx={{
-                            backgroundImage: `url(/${value.img})`,
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "cover",
-                            width: "80px",
-                            height: "80px",
-                            borderRadius: "8px",
-                            cursor: "pointer",
-                            flexShrink: 0,
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              bgcolor: "#1D1D1D73",
-                              width: "100%",
-                              height: "100%",
-                              borderRadius: "8px",
-                              color: "white",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              fontSize: "18px",
-                              fontWeight: "bold",
-                              cursor: "pointer",
-                            }}
-                          >
-                            +{apartment.length - 4}
                           </Box>
-                        </Box>
-                      );
-                    })}
+                        );
+                      })}
                   </Box>
                 );
               }
@@ -188,7 +223,7 @@ const Discount = () => {
                   color: "#091B29",
                 }}
               >
-                Jumeirah Estate
+                {currentselected.name}
               </h1>
               <Box
                 sx={{
@@ -217,7 +252,7 @@ const Discount = () => {
                 marginTop: "7px",
               }}
             >
-              Rubix Apartment, K Tower, Floor 1
+              {currentselected.address}
             </h1>
             <Box
               sx={{
@@ -233,7 +268,7 @@ const Discount = () => {
             >
               <Box sx={{ display: "flex", gap: "7.3px", alignItems: "center" }}>
                 <Bedicon />
-                <p style={{ fontSize: "14px" }}>2</p>
+                <p style={{ fontSize: "14px" }}>{currentselected.bed}</p>
               </Box>
               <Box
                 sx={{
@@ -251,7 +286,7 @@ const Discount = () => {
               />
               <Box sx={{ display: "flex", gap: "7.3px", alignItems: "center" }}>
                 <Bathtub />
-                <p style={{ fontSize: "14px" }}>2</p>
+                <p style={{ fontSize: "14px" }}>{currentselected.bathtub}</p>
               </Box>
               <Box
                 sx={{
@@ -269,7 +304,7 @@ const Discount = () => {
               />
               <Box sx={{ display: "flex", gap: "7.3px", alignItems: "center" }}>
                 <Home />
-                <p style={{ fontSize: "14px" }}>2BHK</p>
+                <p style={{ fontSize: "14px" }}>{currentselected.bhk}BHK</p>
               </Box>
               <Box
                 sx={{
@@ -295,7 +330,7 @@ const Discount = () => {
                       fontSize: "14px",
                     }}
                   >
-                    2000
+                    {currentselected.sqft}
                   </span>{" "}
                   Sq.Ft
                 </p>
@@ -363,13 +398,30 @@ const Discount = () => {
               scrollbarWidth: "none",
             }}
           >
+            {localAmenities.Amenities.map((val, i) => {
+              return (
+                <Discount_model
+                  data={val}
+                  discount={Adddiscount}
+                  type={"Amenities"}
+                />
+              );
+            })}
+            {localAmenities.Utility.map((val, i) => {
+              return (
+                <Discount_model
+                  data={val}
+                  discount={Adddiscount}
+                  type={"Utility"}
+                />
+              );
+            })}
+            {/* <Discount_model />
             <Discount_model />
             <Discount_model />
             <Discount_model />
             <Discount_model />
-            <Discount_model />
-            <Discount_model />
-            <Discount_model />
+            <Discount_model /> */}
           </Box>
           <Box
             sx={{
@@ -390,7 +442,7 @@ const Discount = () => {
             <h1
               style={{ fontSize: "14px", fontWeight: "bold", color: "#091B29" }}
             >
-              $ 1,200
+              $ {calculatetotal()}
             </h1>
           </Box>
           <Button
@@ -407,6 +459,10 @@ const Discount = () => {
               color: "white",
               textWrap: "nowrap",
               marginTop: "23px",
+            }}
+            onClick={() => {
+              savecompoenent();
+              setpopup(null);
             }}
           >
             Apply Discount

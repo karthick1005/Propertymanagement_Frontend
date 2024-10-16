@@ -2,11 +2,31 @@ import { Box, MenuItem, Select, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { Expandedarrow } from "../../assets/Icons";
 
-const Discount_model = () => {
+const Discount_model = ({ data, discount, type }) => {
   const names = ["AED", "%"];
-  const [Currentname, setcurrentname] = useState(names[0]);
+  const [Currentselected, setCurrentselected] = useState(names[1]);
   const handleChange = (event) => {
-    setcurrentname(event.target.value);
+    setCurrentselected(event.target.value);
+  };
+  const updatediscount = (event) => {
+    let dis;
+    console.log(event.target.value, data.price);
+    if (Currentselected === "%") {
+      if (Number(event.target.value) < 0) {
+        event.target.value = 0;
+      } else if (Number(event.target.value) > 100) {
+        event.target.value = 100;
+      }
+      dis = Number(event.target.value);
+    } else if (Currentselected === "AED") {
+      if (Number(event.target.value) < 0) {
+        event.target.value = 0;
+      } else if (Number(event.target.value) > data.price) {
+        event.target.value = Number(data.price);
+      }
+      dis = Number((event.target.value / data.price) * 100);
+    }
+    discount(data, type, dis);
   };
   return (
     <Box
@@ -32,7 +52,7 @@ const Discount_model = () => {
             color: "#4E5A6B",
           }}
         >
-          Bill Name Here
+          {data.name}
         </h1>
         <h1
           style={{
@@ -41,7 +61,7 @@ const Discount_model = () => {
             color: "#4E5A6B",
           }}
         >
-          $1,000
+          ${data.price}
         </h1>
       </Box>
       <Box
@@ -68,6 +88,13 @@ const Discount_model = () => {
             // label="Outlined"
             variant="outlined"
             placeholder="100,00"
+            // type="number"
+            value={
+              Currentselected === "%"
+                ? data.Discount
+                : (data.Discount / 100) * data.price
+            }
+            onChange={updatediscount}
             sx={{
               "& .MuiOutlinedInput-root": {
                 width: "59.5px",
@@ -96,7 +123,7 @@ const Discount_model = () => {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={Currentname}
+            value={Currentselected}
             onChange={handleChange}
             IconComponent={(props) => (
               <Box

@@ -30,11 +30,11 @@ const PopupBody = styled("div")({
 
 export default PopupBody;
 
-export const Unitcard = ({ Unitid }) => {
+export const Unitcard = ({ data }) => {
   const { anchor, currentselected, setAnchor, setcurrentselected, setpopup } =
     useStore();
   const handleClick = (event) => {
-    setcurrentselected(Unitid);
+    setcurrentselected(data);
     setAnchor(anchor === event.currentTarget ? null : event.currentTarget);
   };
 
@@ -54,12 +54,15 @@ export const Unitcard = ({ Unitid }) => {
         paddingBottom: "5px",
       }}
     >
+      {console.log(data)}
       <Box
         sx={{
           width: "198px",
           height: "100px",
           borderRadius: "4px",
-          backgroundImage: "url(/apartment.jpg)",
+          backgroundImage: `url(${
+            data?.estate_images[0]?.img || "/apartment.jpg"
+          })`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -93,7 +96,7 @@ export const Unitcard = ({ Unitid }) => {
         }}
         className="Estate_name"
       >
-        <h1>Jumeirah Estate</h1>
+        <h1>{data.name}</h1>
         <h1>$ 1,200</h1>
       </Box>
       <Box
@@ -107,7 +110,7 @@ export const Unitcard = ({ Unitid }) => {
           justifyContent: "space-between",
         }}
       >
-        <p>Jumeirah Golf Estate</p>
+        <p>{data.description}</p>
 
         <Box
           sx={{
@@ -123,7 +126,7 @@ export const Unitcard = ({ Unitid }) => {
             borderRadius: "100%",
           }}
         />
-        <p>2000 Sq.Ft</p>
+        <p>{data.sqft} Sq.Ft</p>
       </Box>
       <Box
         className="userdetails_name_phone"
@@ -146,7 +149,7 @@ export const Unitcard = ({ Unitid }) => {
         >
           <Box sx={{ display: "flex", gap: "9.7px", alignItems: "center" }}>
             <Bedicon />
-            <p style={{ fontSize: "14px" }}>2</p>
+            <p style={{ fontSize: "14px" }}>{data.bed}</p>
           </Box>
           <Box
             sx={{
@@ -164,7 +167,7 @@ export const Unitcard = ({ Unitid }) => {
           />
           <Box sx={{ display: "flex", gap: "9.7px", alignItems: "center" }}>
             <Bathtub />
-            <p style={{ fontSize: "14px" }}>2</p>
+            <p style={{ fontSize: "14px" }}>{data.bathtub}</p>
           </Box>
         </Box>
         <Box
@@ -191,7 +194,7 @@ export const Unitcard = ({ Unitid }) => {
           />
           <Box sx={{ display: "flex", gap: "9.7px", alignItems: "center" }}>
             <Home />
-            <p style={{ fontSize: "14px" }}>2BHK</p>
+            <p style={{ fontSize: "14px" }}>{data.bhk}BHK</p>
           </Box>
         </Box>
       </Box>

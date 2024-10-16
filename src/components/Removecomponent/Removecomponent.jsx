@@ -1,6 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Button } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import {
   Bathtub,
   Bedicon,
@@ -33,7 +33,35 @@ const Removecomponent = () => {
       img: "apartment.jpg",
     },
   ];
-  const { setpopup } = useStore();
+  const { setpopup, currentselected, estate, updateAmenities, updateUtility } =
+    useStore();
+  // const [localAmenities, setLocalAmenities] = useState(
+  //   {
+  //     Amenities:
+  //       [...estate.find((val) => val.id === currentselected.id)?.Amenities] ||
+  //       [],
+  //     Utility:
+  //       [...estate.find((val) => val.id === currentselected.id)?.Utility] || [],
+  //   } || {}
+  // );
+  const [localAmenities, setLocalAmenities] = useState(() => {
+    const estateEntry = estate.find((val) => val.id === currentselected.id);
+
+    return {
+      Amenities: estateEntry?.Amenities ? [...estateEntry.Amenities] : [],
+      Utility: estateEntry?.Utility ? [...estateEntry.Utility] : [],
+    };
+  });
+  const removedata = (data, type) => {
+    setLocalAmenities((prevdata) => ({
+      ...prevdata,
+      [type]: prevdata[type].filter((val) => val.id !== data.id),
+    }));
+  };
+  const savecompoenent = () => {
+    updateAmenities(localAmenities.Amenities);
+    updateUtility(localAmenities.Utility);
+  };
   return (
     <Box
       sx={{
@@ -74,12 +102,12 @@ const Removecomponent = () => {
               gap: "8px",
             }}
           >
-            {apartment.map((val, i) => {
+            {currentselected.estate_images.map((val, i) => {
               if (i == 0) {
                 return (
                   <Box
                     sx={{
-                      backgroundImage: `url(/${val.img})`,
+                      backgroundImage: `url(${val.img})`,
                       backgroundPosition: "center",
                       backgroundRepeat: "no-repeat",
                       backgroundSize: "cover",
@@ -101,22 +129,63 @@ const Removecomponent = () => {
                       width: "168px",
                     }}
                   >
-                    {apartment.slice(1, 4).map((value, index) => {
-                      return (
-                        <Box
-                          sx={{
-                            backgroundImage: `url(/${value.img})`,
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "cover",
-                            width: "80px",
-                            height: "80px",
-                            borderRadius: "8px",
-                            cursor: "pointer",
-                            flexShrink: 0,
-                          }}
-                        >
-                          {index > 3 ? (
+                    {currentselected.estate_images
+                      .slice(1, 4)
+                      .map((value, index) => {
+                        return (
+                          <Box
+                            sx={{
+                              backgroundImage: `url(${value.img})`,
+                              backgroundPosition: "center",
+                              backgroundRepeat: "no-repeat",
+                              backgroundSize: "cover",
+                              width: "80px",
+                              height: "80px",
+                              borderRadius: "8px",
+                              cursor: "pointer",
+                              flexShrink: 0,
+                            }}
+                          >
+                            {index > 3 ? (
+                              <Box
+                                sx={{
+                                  bgcolor: "#1D1D1D73",
+                                  width: "100%",
+                                  height: "100%",
+                                  borderRadius: "8px",
+                                  color: "white",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  fontSize: "18px",
+                                  fontWeight: "bold",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                +{currentselected.estate_images.length - 5}
+                              </Box>
+                            ) : null}
+                          </Box>
+                        );
+                      })}
+                    {currentselected.estate_images
+                      .slice(4, 5)
+                      .map((value, index) => {
+                        console.log(value.id);
+                        return (
+                          <Box
+                            sx={{
+                              backgroundImage: `url(${value.img})`,
+                              backgroundPosition: "center",
+                              backgroundRepeat: "no-repeat",
+                              backgroundSize: "cover",
+                              width: "80px",
+                              height: "80px",
+                              borderRadius: "8px",
+                              cursor: "pointer",
+                              flexShrink: 0,
+                            }}
+                          >
                             <Box
                               sx={{
                                 bgcolor: "#1D1D1D73",
@@ -132,48 +201,11 @@ const Removecomponent = () => {
                                 cursor: "pointer",
                               }}
                             >
-                              +{apartment.length - 5}
+                              +{currentselected.estate_images.length - 4}
                             </Box>
-                          ) : null}
-                        </Box>
-                      );
-                    })}
-                    {apartment.slice(4, 5).map((value, index) => {
-                      console.log(value.id);
-                      return (
-                        <Box
-                          sx={{
-                            backgroundImage: `url(/${value.img})`,
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "cover",
-                            width: "80px",
-                            height: "80px",
-                            borderRadius: "8px",
-                            cursor: "pointer",
-                            flexShrink: 0,
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              bgcolor: "#1D1D1D73",
-                              width: "100%",
-                              height: "100%",
-                              borderRadius: "8px",
-                              color: "white",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              fontSize: "18px",
-                              fontWeight: "bold",
-                              cursor: "pointer",
-                            }}
-                          >
-                            +{apartment.length - 4}
                           </Box>
-                        </Box>
-                      );
-                    })}
+                        );
+                      })}
                   </Box>
                 );
               }
@@ -188,7 +220,7 @@ const Removecomponent = () => {
                   color: "#091B29",
                 }}
               >
-                Jumeirah Estate
+                {currentselected.name}
               </h1>
               <Box
                 sx={{
@@ -217,7 +249,7 @@ const Removecomponent = () => {
                 marginTop: "7px",
               }}
             >
-              Rubix Apartment, K Tower, Floor 1
+              {currentselected.address}
             </h1>
             <Box
               sx={{
@@ -233,7 +265,7 @@ const Removecomponent = () => {
             >
               <Box sx={{ display: "flex", gap: "7.3px", alignItems: "center" }}>
                 <Bedicon />
-                <p style={{ fontSize: "14px" }}>2</p>
+                <p style={{ fontSize: "14px" }}>{currentselected.bed}</p>
               </Box>
               <Box
                 sx={{
@@ -251,7 +283,7 @@ const Removecomponent = () => {
               />
               <Box sx={{ display: "flex", gap: "7.3px", alignItems: "center" }}>
                 <Bathtub />
-                <p style={{ fontSize: "14px" }}>2</p>
+                <p style={{ fontSize: "14px" }}>{currentselected.bathtub}</p>
               </Box>
               <Box
                 sx={{
@@ -269,7 +301,7 @@ const Removecomponent = () => {
               />
               <Box sx={{ display: "flex", gap: "7.3px", alignItems: "center" }}>
                 <Home />
-                <p style={{ fontSize: "14px" }}>2BHK</p>
+                <p style={{ fontSize: "14px" }}>{currentselected.bhk}BHK</p>
               </Box>
               <Box
                 sx={{
@@ -295,8 +327,8 @@ const Removecomponent = () => {
                       fontSize: "14px",
                     }}
                   >
-                    2000
-                  </span>{" "}
+                    {currentselected.sqft}
+                  </span>
                   Sq.Ft
                 </p>
               </Box>
@@ -363,7 +395,22 @@ const Removecomponent = () => {
               scrollbarWidth: "none",
             }}
           >
-            <Removecomponent_model />
+            {localAmenities.Amenities?.map((val) => (
+              <Removecomponent_model
+                data={val}
+                type="Amenities"
+                removedata={removedata}
+              />
+            ))}
+            {localAmenities.Utility?.map((val) => (
+              <Removecomponent_model
+                data={val}
+                type="Utility"
+                removedata={removedata}
+              />
+            ))}
+            {console.log(localAmenities)}
+            {/* <Removecomponent_model /> */}
           </Box>
           <Box
             sx={{
@@ -401,6 +448,10 @@ const Removecomponent = () => {
               color: "white",
               textWrap: "nowrap",
               marginTop: "23px",
+            }}
+            onClick={() => {
+              savecompoenent();
+              setpopup(null);
             }}
           >
             Update & Save

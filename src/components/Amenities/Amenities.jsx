@@ -9,7 +9,7 @@ import CustomToggle from "../CustomToggle/Amenities_toggle";
 const Amenities = () => {
   const { setpopup, estate, updateAmenities, currentselected } = useStore();
   const [localAmenities, setLocalAmenities] = useState(
-    estate.find((val) => (val.id = currentselected)).Amenities || []
+    estate.find((val) => val.id === currentselected.id).Amenities || []
   );
 
   const amenities_list = [
@@ -87,7 +87,7 @@ const Amenities = () => {
               scrollbarWidth: "none",
             }}
           >
-            {amenities_list.map((val, i) => (
+            {currentselected.amenities_masters.map((val, i) => (
               <CustomToggle
                 item={val}
                 localitems={localAmenities}
