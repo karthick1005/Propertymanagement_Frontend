@@ -29,7 +29,8 @@ const Lead = () => {
     "Quotation Details",
     "Preview and Create",
   ];
-  const { estate, setestate, setuserdetails, userdetails } = useStore();
+  const { estate, setestate, setuserdetails, userdetails, setAnchor } =
+    useStore();
   const options = { day: "numeric", month: "short", year: "2-digit" };
   const [totalamt, settotalamt] = useState(0);
   const [discountamt, setdiscountamt] = useState(0);
@@ -103,6 +104,9 @@ const Lead = () => {
       return Number((18 / 100) * total);
     }
   };
+  const deleteestate = (data) => {
+    setestate(estate.filter((val) => val.id !== data.id));
+  };
   return (
     <Box
       sx={{
@@ -113,6 +117,7 @@ const Lead = () => {
         flex: 1,
         // border: "2px solid red",
       }}
+      onClick={() => setAnchor(null)}
     >
       <Box
         sx={{
@@ -578,7 +583,7 @@ const Lead = () => {
                 }}
               >
                 {estate?.map((val) => {
-                  return <Unitcard data={val} />;
+                  return <Unitcard data={val} deleteestate={deleteestate} />;
                 })}
               </Box>
             </Box>
@@ -711,7 +716,13 @@ const Lead = () => {
                           (calculatetotal("Discount")[0] /
                             calculatetotal("Discount")[1]) *
                           100
-                        ).toFixed("0")}
+                        )?.toFixed("0") !== "NaN"
+                          ? (
+                              (calculatetotal("Discount")[0] /
+                                calculatetotal("Discount")[1]) *
+                              100
+                            )?.toFixed("0")
+                          : 0}
                         %
                       </p>
                     </Box>

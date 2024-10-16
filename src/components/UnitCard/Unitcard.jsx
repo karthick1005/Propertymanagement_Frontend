@@ -31,7 +31,7 @@ const PopupBody = styled("div")({
 
 export default PopupBody;
 
-export const Unitcard = ({ data }) => {
+export const Unitcard = ({ data, deleteestate }) => {
   const {
     anchor,
     currentselected,
@@ -69,6 +69,7 @@ export const Unitcard = ({ data }) => {
     setcurrentprice(calculatetotal("Current", datas));
     setoriginalprice(calculatetotal("original", datas));
   }, [estate]);
+
   const calculatetotal = (type, datas) => {
     let total = 0;
     for (const key in datas) {
@@ -105,7 +106,10 @@ export const Unitcard = ({ data }) => {
         paddingBottom: "5px",
         cursor: "pointer",
       }}
-      onClick={() => setpopup(<ViewUnits />)}
+      onClick={() => {
+        setcurrentselected(data);
+        setpopup(<ViewUnits />);
+      }}
     >
       <Box
         sx={{
@@ -138,6 +142,7 @@ export const Unitcard = ({ data }) => {
           }}
           onClick={(event) => {
             event.stopPropagation();
+            deleteestate(data);
           }}
         >
           <Trashicon />

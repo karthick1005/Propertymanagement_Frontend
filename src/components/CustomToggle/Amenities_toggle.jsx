@@ -248,7 +248,13 @@ const CustomToggle = ({ item, localitems, setlocalitems, type }) => {
     setlocalitems(
       localitems.map((val) =>
         val.id === item.id
-          ? { ...val, ...(type === "Amenities" && { free: !val.free }) }
+          ? {
+              ...val,
+              ...(type === "Amenities" && {
+                free: !val.free,
+                Discount: !val.free === true ? 100 : 0,
+              }),
+            }
           : val
       )
     );

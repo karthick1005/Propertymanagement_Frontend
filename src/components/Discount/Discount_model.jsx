@@ -83,101 +83,115 @@ const Discount_model = ({ data, discount, type }) => {
           Discount
         </h1>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <TextField
-            id="outlined-basic"
-            // label="Outlined"
-            variant="outlined"
-            placeholder="100,00"
-            // type="number"
-            value={
-              Currentselected === "%"
-                ? data.Discount
-                : (data.Discount / 100) * data.price
-            }
-            onChange={updatediscount}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                width: "59.5px",
-                height: "22px",
-                fontFamily: "Nunito Sans",
-                borderRadius: "0px",
-                fontSize: "12px",
-                fontWeight: "bold",
-                borderTopLeftRadius: "4px",
-                borderBottomLeftRadius: "4px",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#E4E8EE",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#E4E8EE",
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#E4E8EE",
-              },
-              "& .MuiInputBase-input": {
-                padding: "1px !important",
-              },
-            }}
-          />
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={Currentselected}
-            onChange={handleChange}
-            IconComponent={(props) => (
-              <Box
+          {data.free ? (
+            <h1
+              style={{
+                fontSize: "14px",
+                color: "#FF9340",
+                fontWeight: "400",
+              }}
+            >
+              Applied for Free
+            </h1>
+          ) : (
+            <>
+              <TextField
+                id="outlined-basic"
+                // label="Outlined"
+                variant="outlined"
+                placeholder="100,00"
+                // type="number"
+                value={
+                  Currentselected === "%"
+                    ? data.Discount
+                    : (data.Discount / 100) * data.price
+                }
+                onChange={updatediscount}
                 sx={{
-                  //   marginRight: "16.3px",
-                  height: "auto",
-                  display: "flex",
-                  alignItems: "start",
-                  justifyContent: "center",
-                  marginTop: "2.5px",
+                  "& .MuiOutlinedInput-root": {
+                    width: "59.5px",
+                    height: "22px",
+                    fontFamily: "Nunito Sans",
+                    borderRadius: "0px",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    borderTopLeftRadius: "4px",
+                    borderBottomLeftRadius: "4px",
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#E4E8EE",
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#E4E8EE",
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#E4E8EE",
+                  },
+                  "& .MuiInputBase-input": {
+                    padding: "1px !important",
+                  },
                 }}
-                {...props}
+              />
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={Currentselected}
+                onChange={handleChange}
+                IconComponent={(props) => (
+                  <Box
+                    sx={{
+                      //   marginRight: "16.3px",
+                      height: "auto",
+                      display: "flex",
+                      alignItems: "start",
+                      justifyContent: "center",
+                      marginTop: "2.5px",
+                    }}
+                    {...props}
+                  >
+                    <Expandedarrow
+                      style={{
+                        fill: "#091B29",
+                        stroke: "#091B29",
+                      }}
+                      width={12}
+                      height={6.5}
+                    />
+                  </Box>
+                )}
+                sx={{
+                  width: "59.5px",
+                  height: "22px",
+                  bgcolor: "#F5F7FA",
+                  boxSizing: "border-box",
+                  color: "black",
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  borderRadius: "0px",
+                  borderTopRightRadius: "4px",
+                  borderBottomRightRadius: "4px",
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#E4E8EE",
+                  },
+                  "&:hover .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#E4E8EE",
+                  },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#E4E8EE",
+                  },
+                  "& .MuiInputBase-input": {
+                    padding: "4px !important",
+                  },
+                }}
               >
-                <Expandedarrow
-                  style={{
-                    fill: "#091B29",
-                    stroke: "#091B29",
-                  }}
-                  width={12}
-                  height={6.5}
-                />
-              </Box>
-            )}
-            sx={{
-              width: "59.5px",
-              height: "22px",
-              bgcolor: "#F5F7FA",
-              boxSizing: "border-box",
-              color: "black",
-              fontSize: "12px",
-              fontWeight: "bold",
-              borderRadius: "0px",
-              borderTopRightRadius: "4px",
-              borderBottomRightRadius: "4px",
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#E4E8EE",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#E4E8EE",
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#E4E8EE",
-              },
-              "& .MuiInputBase-input": {
-                padding: "4px !important",
-              },
-            }}
-          >
-            {names.map((val, i) => (
-              <MenuItem key={i} value={val}>
-                {val}
-              </MenuItem>
-            ))}
-          </Select>
+                {names.map((val, i) => (
+                  <MenuItem key={i} value={val}>
+                    {val}
+                  </MenuItem>
+                ))}
+              </Select>
+            </>
+          )}
         </Box>
       </Box>
     </Box>

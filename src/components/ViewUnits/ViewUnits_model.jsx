@@ -6,11 +6,14 @@ const ViewUnits_model = ({ data, type, removedata }) => {
   return (
     <Box
       sx={{
-        height: "38px",
+        height: "58px",
         // maxHeight: "62.5px",
         flexShrink: 0,
         // boxSizing: "border-box",
         borderBottom: "1px solid #E4E8EE",
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
       }}
     >
       <Box
@@ -45,6 +48,34 @@ const ViewUnits_model = ({ data, type, removedata }) => {
           >
             <Deleteicon />
           </Box> */}
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "14px",
+            fontWeight: 600,
+            color: "#98A0AC",
+          }}
+        >
+          Discount
+        </h1>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "23px" }}>
+          <h1
+            style={{
+              fontSize: "14px",
+              fontWeight: "bold",
+              color: "#98A0AC",
+            }}
+          >
+            {data.Discount}%
+          </h1>
         </Box>
       </Box>
     </Box>

@@ -30,13 +30,14 @@ const PopupBody = styled("div")({
   boxSizing: "border-box",
 });
 const Popup = () => {
-  const { Popup, setpopup, infoanchor, setInfoAnchor } = useStore();
+  const { Popup, setpopup, infoanchor, setInfoAnchor, setAnchor } = useStore();
   const handleClose = () => setOpen(false);
   const open = Boolean(infoanchor);
   const id = open ? "simple-popper" : undefined;
   useEffect(() => {
     if (Popup == null) {
       setInfoAnchor(null);
+      setAnchor(null);
     }
   }, [Popup]);
   return (
