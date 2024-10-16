@@ -31,6 +31,9 @@ const Lead = () => {
   ];
   const { estate, setestate, setuserdetails, userdetails } = useStore();
   const options = { day: "numeric", month: "short", year: "2-digit" };
+  const [totalamt, settotalamt] = useState(0);
+  const [discountamt, setdiscountamt] = useState(0);
+  const [totaltax, settotaltax] = useState(0);
   useEffect(() => {
     const fetchdata = async () => {
       let data = await getRequest("/getuserdata", { user_id: 1 });
@@ -43,6 +46,63 @@ const Lead = () => {
     };
     fetchdata();
   }, []);
+  useEffect(() => {
+    settotalamt(calculatetotal("Total"));
+    setdiscountamt(calculatetotal("Discount")[0]);
+    settotaltax(calculatetotal("Tax"));
+  }, [estate]);
+  const listofobject = ["Amenities", "Utility"];
+  const calculatetotal = (type, data) => {
+    let total = 0;
+    if (type === "Total") {
+      estate?.map((val) => {
+        total += val.price;
+        // console.log(total);
+        listofobject.map((item) => {
+          total +=
+            val[item]?.reduce((acc, item) => acc + Number(item.price), 0) || 0;
+          // console.log(total);
+        });
+      });
+      console.log(total);
+      return total;
+    }
+    if (type === "Discount") {
+      estate?.map((val) => {
+        total += val.price;
+        listofobject.map((item) => {
+          total +=
+            val[item]?.reduce((acc, item) => acc + Number(item.price), 0) || 0;
+        });
+      });
+      console.log(total);
+      let discount = 0;
+      estate?.map((val) => {
+        listofobject.map((item) => {
+          discount +=
+            val[item]?.reduce(
+              (acc, item) => acc + (item.Discount / 100) * Number(item.price),
+              0
+            ) || 0;
+        });
+      });
+      console.log(discount);
+      return [discount, total];
+    }
+    if (type === "Tax") {
+      estate?.map((val) => {
+        total += val.price;
+        // console.log(total);
+        listofobject.map((item) => {
+          total +=
+            val[item]?.reduce((acc, item) => acc + Number(item.price), 0) || 0;
+          // console.log(total);
+        });
+      });
+      console.log(total);
+      return Number((18 / 100) * total);
+    }
+  };
   return (
     <Box
       sx={{
@@ -605,7 +665,7 @@ const Lead = () => {
                     <Box
                       sx={{ flex: 1, textAlign: "center", fontWeight: "400" }}
                     >
-                      <p>3</p>
+                      <p>{estate?.length || 3}</p>
                     </Box>
                     <Box
                       sx={{
@@ -615,7 +675,7 @@ const Lead = () => {
                         color: "#091B29",
                       }}
                     >
-                      <p>$ 3,600.00</p>
+                      <p>$ {totalamt}.00</p>
                     </Box>
                   </Box>
                   <Box
@@ -646,12 +706,19 @@ const Lead = () => {
                     <Box
                       sx={{ flex: 1, textAlign: "center", fontWeight: "600" }}
                     >
-                      <p>10%</p>
+                      <p>
+                        {(
+                          (calculatetotal("Discount")[0] /
+                            calculatetotal("Discount")[1]) *
+                          100
+                        ).toFixed("0")}
+                        %
+                      </p>
                     </Box>
                     <Box
                       sx={{ flex: 1, textAlign: "right", fontWeight: "600" }}
                     >
-                      <p>- $ 100.00</p>
+                      <p>- $ {discountamt}.00</p>
                     </Box>
                   </Box>
                   <Box
@@ -733,7 +800,7 @@ const Lead = () => {
                         color: "#091B29",
                       }}
                     >
-                      <p>$ 648.00</p>
+                      <p>$ {totaltax}.00</p>
                     </Box>
                   </Box>
                 </Box>
@@ -768,7 +835,7 @@ const Lead = () => {
                       textAlign: "right",
                     }}
                   >
-                    <p>$ 4,148.00</p>
+                    <p>$ {totalamt - discountamt + totaltax}.00</p>
                   </Box>
                 </Box>
               </Box>
