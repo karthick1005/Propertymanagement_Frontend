@@ -33,17 +33,36 @@ const Discount = () => {
       img: "apartment.jpg",
     },
   ];
-  const { setpopup, currentselected, estate, updateAmenities, updateUtility } =
-    useStore();
+  const {
+    setpopup,
+    currentselected,
+    estate,
+    updateAmenities,
+    updateUtility,
+    modifypricingtable,
+  } = useStore();
   const [localAmenities, setLocalAmenities] = useState(() => {
     const estateEntry = estate.find((val) => val.id === currentselected.id);
 
     return {
       Amenities: estateEntry?.Amenities ? [...estateEntry.Amenities] : [],
       Utility: estateEntry?.Utility ? [...estateEntry.Utility] : [],
+      primary: estateEntry?.primary ? [...estateEntry.primary] : [],
+      secondary: estateEntry?.secondary ? [...estateEntry.secondary] : [],
+      onetime: estateEntry?.onetime ? [...estateEntry.onetime] : [],
+      inventory: estateEntry?.inventory ? [...estateEntry.inventory] : [],
+      parking: estateEntry?.parking ? [...estateEntry.parking] : [],
     };
   });
+  const listofobject = [
+    "primary",
+    "secondary",
+    "onetime",
+    "inventory",
+    "parking",
+  ];
   const Adddiscount = (data, type, dis) => {
+    console.log(data);
     setLocalAmenities((prev) => ({
       ...prev,
       [type]: prev[type].map((val) =>
@@ -54,6 +73,9 @@ const Discount = () => {
   const savecompoenent = () => {
     updateAmenities(localAmenities.Amenities);
     updateUtility(localAmenities.Utility);
+    listofobject.map((val) => {
+      modifypricingtable({ type: val, Updatevalue: localAmenities[val] });
+    });
   };
   const calculatetotal = () => {
     let total = 0;
@@ -414,6 +436,51 @@ const Discount = () => {
                   data={val}
                   discount={Adddiscount}
                   type={"Utility"}
+                />
+              );
+            })}
+            {localAmenities?.primary.map((val, i) => {
+              return (
+                <Discount_model
+                  data={val}
+                  discount={Adddiscount}
+                  type={"primary"}
+                />
+              );
+            })}
+            {localAmenities?.secondary.map((val, i) => {
+              return (
+                <Discount_model
+                  data={val}
+                  discount={Adddiscount}
+                  type={"secondary"}
+                />
+              );
+            })}
+            {localAmenities?.onetime.map((val, i) => {
+              return (
+                <Discount_model
+                  data={val}
+                  discount={Adddiscount}
+                  type={"onetime"}
+                />
+              );
+            })}
+            {localAmenities?.inventory.map((val, i) => {
+              return (
+                <Discount_model
+                  data={val}
+                  discount={Adddiscount}
+                  type={"inventory"}
+                />
+              );
+            })}
+            {localAmenities?.parking.map((val, i) => {
+              return (
+                <Discount_model
+                  data={val}
+                  discount={Adddiscount}
+                  type={"parking"}
                 />
               );
             })}

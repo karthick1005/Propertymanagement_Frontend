@@ -50,6 +50,11 @@ const ViewUnits = () => {
     return {
       Amenities: estateEntry?.Amenities ? [...estateEntry.Amenities] : [],
       Utility: estateEntry?.Utility ? [...estateEntry.Utility] : [],
+      primary: estateEntry?.primary ? [...estateEntry.primary] : [],
+      secondary: estateEntry?.secondary ? [...estateEntry.secondary] : [],
+      onetime: estateEntry?.onetime ? [...estateEntry.onetime] : [],
+      inventory: estateEntry?.inventory ? [...estateEntry.inventory] : [],
+      parking: estateEntry?.parking ? [...estateEntry.parking] : [],
     };
   });
   const removedata = (data, type) => {
@@ -419,7 +424,52 @@ const ViewUnits = () => {
                 type="Utility"
                 removedata={removedata}
               />
-            ))}
+            ))}{" "}
+            {localAmenities?.primary.map((val, i) => {
+              return (
+                <ViewUnits_model
+                  data={val}
+                  removedata={removedata}
+                  type={"primary"}
+                />
+              );
+            })}
+            {localAmenities?.secondary.map((val, i) => {
+              return (
+                <ViewUnits_model
+                  data={val}
+                  removedata={removedata}
+                  type={"secondary"}
+                />
+              );
+            })}
+            {localAmenities?.onetime.map((val, i) => {
+              return (
+                <ViewUnits_model
+                  data={val}
+                  removedata={removedata}
+                  type={"onetime"}
+                />
+              );
+            })}
+            {localAmenities?.inventory.map((val, i) => {
+              return (
+                <ViewUnits_model
+                  data={val}
+                  removedata={removedata}
+                  type={"inventory"}
+                />
+              );
+            })}
+            {localAmenities?.parking.map((val, i) => {
+              return (
+                <ViewUnits_model
+                  data={val}
+                  removedata={removedata}
+                  type={"parking"}
+                />
+              );
+            })}
             {/* <Removecomponent_model /> */}
           </Box>
           <Box

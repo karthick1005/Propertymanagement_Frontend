@@ -33,8 +33,14 @@ const Removecomponent = () => {
       img: "apartment.jpg",
     },
   ];
-  const { setpopup, currentselected, estate, updateAmenities, updateUtility } =
-    useStore();
+  const {
+    setpopup,
+    currentselected,
+    estate,
+    updateAmenities,
+    updateUtility,
+    modifypricingtable,
+  } = useStore();
   // const [localAmenities, setLocalAmenities] = useState(
   //   {
   //     Amenities:
@@ -50,8 +56,20 @@ const Removecomponent = () => {
     return {
       Amenities: estateEntry?.Amenities ? [...estateEntry.Amenities] : [],
       Utility: estateEntry?.Utility ? [...estateEntry.Utility] : [],
+      primary: estateEntry?.primary ? [...estateEntry.primary] : [],
+      secondary: estateEntry?.secondary ? [...estateEntry.secondary] : [],
+      onetime: estateEntry?.onetime ? [...estateEntry.onetime] : [],
+      inventory: estateEntry?.inventory ? [...estateEntry.inventory] : [],
+      parking: estateEntry?.parking ? [...estateEntry.parking] : [],
     };
   });
+  const listofobject = [
+    "primary",
+    "secondary",
+    "onetime",
+    "inventory",
+    "parking",
+  ];
   const removedata = (data, type) => {
     setLocalAmenities((prevdata) => ({
       ...prevdata,
@@ -61,6 +79,9 @@ const Removecomponent = () => {
   const savecompoenent = () => {
     updateAmenities(localAmenities.Amenities);
     updateUtility(localAmenities.Utility);
+    listofobject.map((val) => {
+      modifypricingtable({ type: val, Updatevalue: localAmenities[val] });
+    });
   };
   const calculatetotal = () => {
     let total = 0;
@@ -420,6 +441,51 @@ const Removecomponent = () => {
                 removedata={removedata}
               />
             ))}
+            {localAmenities?.primary.map((val, i) => {
+              return (
+                <Removecomponent_model
+                  data={val}
+                  removedata={removedata}
+                  type={"primary"}
+                />
+              );
+            })}
+            {localAmenities?.secondary.map((val, i) => {
+              return (
+                <Removecomponent_model
+                  data={val}
+                  removedata={removedata}
+                  type={"secondary"}
+                />
+              );
+            })}
+            {localAmenities?.onetime.map((val, i) => {
+              return (
+                <Removecomponent_model
+                  data={val}
+                  removedata={removedata}
+                  type={"onetime"}
+                />
+              );
+            })}
+            {localAmenities?.inventory.map((val, i) => {
+              return (
+                <Removecomponent_model
+                  data={val}
+                  removedata={removedata}
+                  type={"inventory"}
+                />
+              );
+            })}
+            {localAmenities?.parking.map((val, i) => {
+              return (
+                <Removecomponent_model
+                  data={val}
+                  removedata={removedata}
+                  type={"parking"}
+                />
+              );
+            })}
             {/* <Removecomponent_model /> */}
           </Box>
           <Box

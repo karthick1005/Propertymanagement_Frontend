@@ -52,7 +52,15 @@ const Lead = () => {
     setdiscountamt(calculatetotal("Discount")[0]);
     settotaltax(calculatetotal("Tax"));
   }, [estate]);
-  const listofobject = ["Amenities", "Utility"];
+  const listofobject = [
+    "Amenities",
+    "Utility",
+    "primary",
+    "secondary",
+    "onetime",
+    "inventory",
+    "parking",
+  ];
   const calculatetotal = (type, data) => {
     let total = 0;
     if (type === "Total") {
@@ -60,9 +68,13 @@ const Lead = () => {
         total += val.price;
         // console.log(total);
         listofobject.map((item) => {
+          // if (item === "Amenities" && item === "Utility") {
           total +=
             val[item]?.reduce((acc, item) => acc + Number(item.price), 0) || 0;
-          // console.log(total);
+          // } else {
+          //   total += val[item]?.price || 0;
+          //   console.log(val[item]);
+          // }
         });
       });
       console.log(total);
@@ -72,22 +84,30 @@ const Lead = () => {
       estate?.map((val) => {
         total += val.price;
         listofobject.map((item) => {
+          // if (item === "Amenities" && item === "Utility") {
           total +=
             val[item]?.reduce((acc, item) => acc + Number(item.price), 0) || 0;
+          // } else {
+          //   total += val[item]?.price || 0;
+          // }
         });
       });
-      console.log(total);
       let discount = 0;
       estate?.map((val) => {
         listofobject.map((item) => {
+          // if (item === "Amenities" && item === "Utility") {
+          console.log(val[item]);
           discount +=
             val[item]?.reduce(
               (acc, item) => acc + (item.Discount / 100) * Number(item.price),
               0
             ) || 0;
+          // } else {
+          //   discount +=
+          //     (val[item]?.Discount || 0 / 100) * Number(val[item]?.price || 0);
+          // }
         });
       });
-      console.log(discount);
       return [discount, total];
     }
     if (type === "Tax") {
@@ -95,8 +115,12 @@ const Lead = () => {
         total += val.price;
         // console.log(total);
         listofobject.map((item) => {
+          // if (item === "Amenities" && item === "Utility") {
           total +=
             val[item]?.reduce((acc, item) => acc + Number(item.price), 0) || 0;
+          // } else {
+          //   total += val[item]?.price || 0;
+          // }
           // console.log(total);
         });
       });

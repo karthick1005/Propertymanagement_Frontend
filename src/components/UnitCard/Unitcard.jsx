@@ -61,15 +61,29 @@ export const Unitcard = ({ data, deleteestate }) => {
   const [originalprice, setoriginalprice] = useState(data.price);
   useEffect(() => {
     const estateEntry = estate.find((val) => val.id === data.id);
+    console.log(estateEntry);
     let datas = {
       Amenities: estateEntry?.Amenities ? [...estateEntry.Amenities] : [],
       Utility: estateEntry?.Utility ? [...estateEntry.Utility] : [],
+      primary: estateEntry?.primary ? [...estateEntry.primary] : [],
+      secondary: estateEntry?.secondary ? [...estateEntry.secondary] : [],
+      onetime: estateEntry?.onetime ? [...estateEntry.onetime] : [],
+      inventory: estateEntry?.inventory ? [...estateEntry.inventory] : [],
+      parking: estateEntry?.parking ? [...estateEntry.parking] : [],
     };
     setLocalAmenities(datas);
     setcurrentprice(calculatetotal("Current", datas));
     setoriginalprice(calculatetotal("original", datas));
   }, [estate]);
-
+  const listofobject = [
+    "Amenities",
+    "Utility",
+    "primary",
+    "secondary",
+    "onetime",
+    "inventory",
+    "parking",
+  ];
   const calculatetotal = (type, datas) => {
     let total = 0;
     for (const key in datas) {

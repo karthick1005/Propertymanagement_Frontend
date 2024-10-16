@@ -111,7 +111,7 @@ const PricingTable = () => {
     console.log(estateEntry[val.val]?.Chargeable);
     setcomponentbasedon(estateEntry[val.val]?.componentbasedon || "Amount");
     setrevenuetype(estateEntry[val.val]?.RevenueType || "Lease");
-    setamount(estateEntry[val.val]?.Amount || 200);
+    setamount(estateEntry[val.val]?.price || 200);
     setchargable(estateEntry[val.val]?.Chargeable || true);
     setcurrentcomponent(val);
   };
@@ -119,16 +119,21 @@ const PricingTable = () => {
     console.log("hello");
     modifypricingtable({
       type: currentcomponent.val,
-      Updatevalue: {
-        componentbasedon: componentbasedon,
-        RevenueType: RevenueType,
-        Amount: amount,
-        ...(currentcomponent.val === "secondary" ||
-        currentcomponent.val === "onetime" ||
-        currentcomponent.val === "parking"
-          ? { Chargeable: chargable }
-          : {}),
-      },
+      Updatevalue: [
+        {
+          id: 1,
+          name: currentcomponent.name + " Table",
+          componentbasedon: componentbasedon,
+          RevenueType: RevenueType,
+          price: amount,
+          Discount: 0,
+          ...(currentcomponent.val === "secondary" ||
+          currentcomponent.val === "onetime" ||
+          currentcomponent.val === "parking"
+            ? { Chargeable: chargable }
+            : {}),
+        },
+      ],
     });
     setcurrentcomponent(null);
   };
