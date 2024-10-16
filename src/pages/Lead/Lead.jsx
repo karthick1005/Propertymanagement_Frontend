@@ -4,7 +4,7 @@ import { Box, Button, Divider, MenuItem, Select } from "@mui/material";
 import { Expandedarrow } from "../../assets/Icons";
 import { Unitcard } from "../../components/UnitCard/Unitcard";
 import useStore from "../../zustand/store";
-import { getRequest } from "../../utils/axios";
+import { getRequest, postRequest } from "../../utils/axios";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -130,6 +130,14 @@ const Lead = () => {
   };
   const deleteestate = (data) => {
     setestate(estate.filter((val) => val.id !== data.id));
+  };
+  const createquotation = async () => {
+    const pushdata = await postRequest("/createquotation", {
+      user_id: userdetails.id,
+      estate,
+    });
+
+    console.log(pushdata);
   };
   return (
     <Box
@@ -935,6 +943,7 @@ const Lead = () => {
                 color: "white",
                 textWrap: "nowrap",
               }}
+              onClick={createquotation}
             >
               Create Quotation
             </Button>
