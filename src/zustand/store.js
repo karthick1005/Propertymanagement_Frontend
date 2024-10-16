@@ -2,7 +2,7 @@ import { Popup } from '@mui/base/Unstable_Popup/Popup';
 import { Description } from '@mui/icons-material';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-const useStore = create(devtools((set, get) => ({
+const useStore = create(((set, get) => ({
     userdetails: null,
     anchor: null,
     currentselected: null,
@@ -31,22 +31,28 @@ const useStore = create(devtools((set, get) => ({
     setpopup: (Popup) => {
         set({ Popup }, false, "setpopup")
     },
-    modifypricingtable: ({ type, val }) => {
+    modifypricingtable: ({ type, Updatevalue }) => {
+        console.log(Updatevalue)
         set((state) => ({
             ...state,
-            [type]: val
-        }))
+            // Amenities: updatedAmenities,
+            estate: state.estate.map((estate) =>
+                estate.id === state.currentselected.id
+                    ? { ...estate, [type]: Updatevalue }
+                    : estate
+            ),
+        }), false, "updatePricingTable");
     },
 
-    setrevenuetype: ({ type, val }) => {
-        set((state) => ({
-            ...state,
-            [type]: {
-                ...state[type],
-                RevenueType: val
-            }
-        }))
-    },
+    // setrevenuetype: ({ type, val }) => {
+    //     set((state) => ({
+    //         ...state,
+    //         [type]: {
+    //             ...state[type],
+    //             RevenueType: val
+    //         }
+    //     }))
+    // },
     // setAmenities: ({ type, val }) => {
     //     set((state) => {
     //         let updatedAmenities;

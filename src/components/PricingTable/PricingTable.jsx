@@ -24,6 +24,8 @@ const PricingTable = () => {
     primary,
     secondary,
     modifypricingtable,
+    currentselected,
+    estate,
   } = useStore();
   const [progress, setProgress] = React.useState(90);
   const handleClick = (event) => {
@@ -101,19 +103,31 @@ const PricingTable = () => {
   const pricingvalues = { primary, secondary };
   const [componentbasedon, setcomponentbasedon] = useState("Amount");
   const [RevenueType, setrevenuetype] = useState("Lease");
+  const [amount, setamount] = useState(200);
   const [chargable, setchargable] = useState(true);
   const [pricebasedon, setpricebasedon] = useState("Monthly");
   const EnableCurrentcomponent = (val) => {
-    setcomponentbasedon(pricingvalues[val.val]?.componentbasedon || "Amount");
-    setrevenuetype(pricingvalues[val.val]?.RevenueType || "Lease");
+    const estateEntry = estate.find((val) => val.id === currentselected.id);
+    console.log(estateEntry[val.val]?.Chargeable);
+    setcomponentbasedon(estateEntry[val.val]?.componentbasedon || "Amount");
+    setrevenuetype(estateEntry[val.val]?.RevenueType || "Lease");
+    setamount(estateEntry[val.val]?.Amount || 200);
+    setchargable(estateEntry[val.val]?.Chargeable || true);
     setcurrentcomponent(val);
   };
   const createpricingcomponent = () => {
+    console.log("hello");
     modifypricingtable({
       type: currentcomponent.val,
-      val: {
+      Updatevalue: {
         componentbasedon: componentbasedon,
         RevenueType: RevenueType,
+        Amount: amount,
+        ...(currentcomponent.val === "secondary" ||
+        currentcomponent.val === "onetime" ||
+        currentcomponent.val === "parking"
+          ? { Chargeable: chargable }
+          : {}),
       },
     });
     setcurrentcomponent(null);
@@ -124,6 +138,7 @@ const PricingTable = () => {
         // sx={{ height: currentcomponent ? currentcomponent.height : "581px" }}
         sx={{ width: "484px" }}
       >
+        {console.log(currentselected)}
         <Box
           sx={{
             display: "flex",
@@ -538,8 +553,8 @@ const PricingTable = () => {
                         maxWidth: "46px",
                         maxHeight: "40px",
                         borderRadius: "4px",
-                        bgcolor: chargable === true ? "#5078E1" : "white",
-                        color: chargable === true ? "white" : "#4E5A6B",
+                        bgcolor: chargable ? "#5078E1" : "white",
+                        color: chargable ? "white" : "#4E5A6B",
                         textWrap: "nowrap",
                         borderColor: "#E4E8EE",
                         boxSizing: "border-box",
@@ -560,8 +575,8 @@ const PricingTable = () => {
                         maxWidth: "42px",
                         height: "40px",
                         borderRadius: "4px",
-                        bgcolor: chargable === false ? "#5078E1" : "white",
-                        color: chargable === false ? "white" : "#4E5A6B",
+                        bgcolor: !chargable ? "#5078E1" : "white",
+                        color: !chargable ? "white" : "#4E5A6B",
                         textWrap: "nowrap",
                         borderColor: "#E4E8EE",
                         boxSizing: "border-box",
@@ -859,8 +874,13 @@ const PricingTable = () => {
                         <TextField
                           fullWidth
                           // label="fullWidth"
+                          value={amount}
+                          // type="number"
                           placeholder="Enter value"
                           id="fullWidth"
+                          onChange={(e) => {
+                            setamount(Number(e.target.value));
+                          }}
                           slotProps={{
                             input: {
                               endAdornment: (
@@ -1025,6 +1045,7 @@ const PricingTable = () => {
                       // label="fullWidth"
                       placeholder="Enter value"
                       id="fullWidth"
+                      value={"$190"}
                       sx={{
                         marginTop: "8px",
                         "& .MuiOutlinedInput-root": {
@@ -1066,6 +1087,7 @@ const PricingTable = () => {
                       // label="fullWidth"
                       placeholder="Enter value"
                       id="fullWidth"
+                      value={"$120"}
                       sx={{
                         marginTop: "8px",
                         "& .MuiOutlinedInput-root": {
@@ -1107,6 +1129,7 @@ const PricingTable = () => {
                       // label="fullWidth"
                       placeholder="Enter value"
                       id="fullWidth"
+                      value={"$100"}
                       sx={{
                         marginTop: "8px",
                         "& .MuiOutlinedInput-root": {
